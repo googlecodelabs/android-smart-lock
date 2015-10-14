@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Smart Lock</string>
+    <string name="title_activity_content">ContentActivity</string>
+    <string name="title_activity_change_cred">ChangeCredActivity</string>
+    <string name="welcome_message">Welcome to Smart Lock CodeLab!</string>
+    <string name="invalid_creds_toast_msg">Credentials are invalid</string>
+    <string name="invalid_username_error_msg">invalid username</string>
+    <string name="sign_out_button_text">Sign Out</string>
+    <string name="change_creds_button_text">change creds</string>
+    <string name="creds_updated_msg">Credentials updated outside Smart Lock.</string>
+    <string name="username1_hint">Username1</string>
+    <string name="password1_hint">Password1</string>
+    <string name="username2_hint">Username2</string>
+    <string name="password2_hint">Password2</string>
+    <string name="username3_hint">Username3</string>
+    <string name="password3_hint">Password3</string>
+    <string name="creds_save_button_text">Save</string>
+    <string name="clear_button_text">Clear</string>
+    <string name="sign_in_button_text">Sign In</string>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Username</string>
+</resources>
