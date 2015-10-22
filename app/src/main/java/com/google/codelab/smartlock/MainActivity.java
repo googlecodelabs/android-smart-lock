@@ -206,6 +206,11 @@ public class MainActivity extends AppCompatActivity implements
                             // sign-in enabled.
                             Credential credential = credentialRequestResult.getCredential();
                             processRetrievedCredential(credential);
+                        } else if (status.getStatusCode() == CommonStatusCodes.RESOLUTION_REQUIRED) {
+                            setFragment(null);
+                            // This is most likely the case where the user has multiple saved
+                            // credentials and needs to pick one.
+                            resolveResult(status, RC_READ);
                         } else if (status.getStatusCode() == CommonStatusCodes.SIGN_IN_REQUIRED) {
                             setFragment(null);
                             // This is most likely the case where the user does not currently
@@ -268,9 +273,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void resolveResult(Status status, int requestCode) {
-        // We don't want to fire multiple resolutions at once since that
-        // can   result in stacked dialogs after rotation or another
-        // similar event.
+        // We don't want to fire multiple resolutions at once since that can result
+        // in stacked dialogs after rotation or another similar event.
         if (mIsResolving) {
             Log.w(TAG, "resolveResult: already resolving.");
             return;
@@ -286,18 +290,23 @@ public class MainActivity extends AppCompatActivity implements
                 Log.e(TAG, "STATUS: Failed to send resolution.", e);
             }
         } else {
-            Log.e(TAG, "STATUS: FAIL");
-            if (requestCode == RC_SAVE) {
-                goToContent();
-            }
+            goToContent();
         }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" +
-                data);
-        if (requestCode == RC_SAVE) {
+        Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
+
+        if (requestCode == RC_READ) {
+            if (resultCode == RESULT_OK) {
+                Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
+                processRetrievedCredential(credential);
+            } else {
+                Log.e(TAG, "Credential Read: NOT OK");
+                setSignInEnabled(true);
+            }
+        } else if (requestCode == RC_SAVE) {
             Log.d(TAG, "Result code: " + resultCode);
             if (resultCode == RESULT_OK) {
                 Log.d(TAG, "Credential Save: OK");
