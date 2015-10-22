@@ -23,7 +23,10 @@ import android.util.Log;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.auth.api.credentials.CredentialRequest;
+import com.google.android.gms.auth.api.credentials.CredentialRequestResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -175,6 +178,64 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "onConnected");
+
+        // Request Credentials once connected. If credentials are retrieved
+        // the user will either be automatically signed in or will be
+        // presented with credential options to be used by the application
+        // for sign in.
+        requestCredentials();
+    }
+
+    private void requestCredentials() {
+        setSignInEnabled(false);
+        mIsRequesting = true;
+
+        CredentialRequest request = new CredentialRequest.Builder()
+                .setSupportsPasswordLogin(true)
+                .build();
+
+        Auth.CredentialsApi.request(mGoogleApiClient, request).setResultCallback(
+                new ResultCallback<CredentialRequestResult>() {
+                    @Override
+                    public void onResult(CredentialRequestResult credentialRequestResult) {
+                        mIsRequesting = false;
+                        Status status = credentialRequestResult.getStatus();
+                        if (credentialRequestResult.getStatus().isSuccess()) {
+                            // Successfully read the credential without any user interaction, this
+                            // means there was only a single credential and the user has auto
+                            // sign-in enabled.
+                            Credential credential = credentialRequestResult.getCredential();
+                            processRetrievedCredential(credential);
+                        } else if (status.getStatusCode() == CommonStatusCodes.SIGN_IN_REQUIRED) {
+                            setFragment(null);
+                            // This is most likely the case where the user does not currently
+                            // have any saved credentials and thus needs to provide a username
+                            // and password to sign in.
+                            Log.d(TAG, "Sign in required");
+                            setSignInEnabled(true);
+                        } else {
+                            Log.w(TAG, "Unrecognized status code: " + status.getStatusCode());
+                            setFragment(null);
+                            setSignInEnabled(true);
+                        }
+                    }
+                }
+        );
+
+    }
+
+    private void processRetrievedCredential(Credential credential) {
+        if (CodelabUtil.isValidCredential(credential)) {
+            goToContent();
+        } else {
+            // This is likely due to the credential being changed outside of
+            // Smart Lock,
+            // ie: away from Android or Chrome. The credential should be deleted
+            // and the user allowed to enter a valid credential.
+            Log.d(TAG, "Retrieved credential invalid, so delete retrieved" +
+                    " credential.");
+
+        }
     }
 
     @Override
