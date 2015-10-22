@@ -14,14 +14,25 @@
 package com.google.codelab.smartlock;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "MainActivity";
     private static final int RC_SAVE = 1;
@@ -33,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int DELAY_MILLIS = 3000;
 
     // Add mGoogleApiClient and mIsResolving fields here.
+    private GoogleApiClient mGoogleApiClient;
     private boolean mIsResolving;
     private boolean mIsRequesting;
     private Handler mHandler;
@@ -41,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .enableAutoManage(this, 0, this)
+                .addApi(Auth.CREDENTIALS_API)
+                .build();
 
         setFragment(getIntent());
 
@@ -154,4 +172,79 @@ public class MainActivity extends AppCompatActivity {
         return mIsRequesting;
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "onConnected");
+    }
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        Log.d(TAG, "onConnectionSuspended: " + cause);
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed: " + connectionResult);
+    }
+
+    public void saveCredential(Credential credential) {
+        // Credential is valid so save it.
+        Auth.CredentialsApi.save(mGoogleApiClient,
+                credential).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(Status status) {
+                if (status.isSuccess()) {
+                    Log.d(TAG, "Credential saved");
+                    goToContent();
+                } else {
+                    Log.d(TAG, "Attempt to save credential failed " +
+                            status.getStatusMessage() + " " +
+                            status.getStatusCode());
+                    resolveResult(status, RC_SAVE);
+                }
+            }
+        });
+    }
+
+    private void resolveResult(Status status, int requestCode) {
+        // We don't want to fire multiple resolutions at once since that
+        // can   result in stacked dialogs after rotation or another
+        // similar event.
+        if (mIsResolving) {
+            Log.w(TAG, "resolveResult: already resolving.");
+            return;
+        }
+
+        Log.d(TAG, "Resolving: " + status);
+        if (status.hasResolution()) {
+            Log.d(TAG, "STATUS: RESOLVING");
+            try {
+                status.startResolutionForResult(this, requestCode);
+                mIsResolving = true;
+            } catch (IntentSender.SendIntentException e) {
+                Log.e(TAG, "STATUS: Failed to send resolution.", e);
+            }
+        } else {
+            Log.e(TAG, "STATUS: FAIL");
+            if (requestCode == RC_SAVE) {
+                goToContent();
+            }
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" +
+                data);
+        if (requestCode == RC_SAVE) {
+            Log.d(TAG, "Result code: " + resultCode);
+            if (resultCode == RESULT_OK) {
+                Log.d(TAG, "Credential Save: OK");
+            } else {
+                Log.e(TAG, "Credential Save Failed");
+            }
+            goToContent();
+        }
+        mIsResolving = false;
+    }
 }

@@ -13,6 +13,8 @@
  */
 package com.google.codelab.smartlock;
 
+import com.google.android.gms.auth.api.credentials.Credential;
+
 public class CodelabUtil {
 
     /**
@@ -54,4 +56,9 @@ public class CodelabUtil {
         return false;
     }
 
+    public static boolean isValidCredential(Credential credential) {
+        String username = credential.getId();
+        String password = credential.getPassword();
+        return isValidCredential(username, password);
+    }
 }
