@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
@@ -237,10 +238,28 @@ public class MainActivity extends AppCompatActivity implements
             // Smart Lock,
             // ie: away from Android or Chrome. The credential should be deleted
             // and the user allowed to enter a valid credential.
-            Log.d(TAG, "Retrieved credential invalid, so delete retrieved" +
-                    " credential.");
-
+            Log.d(TAG, "Retrieved credential invalid, so delete retrieved credential.");
+            Toast.makeText(this, "Retrieved credentials are invalid, so will be deleted.", Toast.LENGTH_LONG).show();
+            deleteCredential(credential);
+            requestCredentials();
+            setSignInEnabled(false);
         }
+    }
+
+    private void deleteCredential(Credential credential) {
+        Auth.CredentialsApi.delete(mGoogleApiClient,
+                credential).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(Status status) {
+                if (status.isSuccess()) {
+                    Log.d(TAG, "Credential successfully deleted.");
+                } else {
+                    // This may be due to the credential not existing, possibly
+                    // already deleted via another device/app.
+                    Log.d(TAG, "Credential not deleted successfully.");
+                }
+            }
+        });
     }
 
     @Override
