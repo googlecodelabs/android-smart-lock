@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 setFragment(null);
             }
         }, DELAY_MILLIS);
-        setFragment(getIntent());
     }
 
     @Override
