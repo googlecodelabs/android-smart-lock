@@ -39,10 +39,10 @@ public class SignInFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
         View view = layoutInflater.inflate(R.layout.fragment_sign_in, container, false);
-        mUsernameTextInputLayout = (TextInputLayout) view.findViewById(R.id.usernameTextInputLayout);
-        mPasswordTextInputLayout = (TextInputLayout) view.findViewById(R.id.passwordTextInputLayout);
+        mUsernameTextInputLayout = view.findViewById(R.id.usernameTextInputLayout);
+        mPasswordTextInputLayout = view.findViewById(R.id.passwordTextInputLayout);
 
-        mUsernameEditText = (EditText) view.findViewById(R.id.usernameEditText);
+        mUsernameEditText = view.findViewById(R.id.usernameEditText);
         mUsernameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -55,7 +55,7 @@ public class SignInFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {}
         });
-        mPasswordEditText = (EditText) view.findViewById(R.id.passwordEditText);
+        mPasswordEditText = view.findViewById(R.id.passwordEditText);
         mPasswordEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -69,7 +69,7 @@ public class SignInFragment extends Fragment {
             public void afterTextChanged(Editable editable) {}
         });
 
-        mSignInButton = (Button) view.findViewById(R.id.signInButton);
+        mSignInButton = view.findViewById(R.id.signInButton);
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -86,7 +86,7 @@ public class SignInFragment extends Fragment {
             }
         });
 
-        Button clearButton = (Button) view.findViewById(R.id.clearButton);
+        Button clearButton = view.findViewById(R.id.clearButton);
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +95,7 @@ public class SignInFragment extends Fragment {
             }
         });
 
-        mSignInProgressBar = (ProgressBar) view.findViewById(R.id.signInProgress);
+        mSignInProgressBar = view.findViewById(R.id.signInProgress);
         mSignInProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         return view;

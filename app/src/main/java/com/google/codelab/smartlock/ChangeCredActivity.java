@@ -38,12 +38,12 @@ public class ChangeCredActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_cred);
 
-        mUsername1TextInputLayout = (TextInputLayout) findViewById(R.id.username1TextInputLayout);
-        mPassword1TextInputLayout = (TextInputLayout) findViewById(R.id.password1TextInputLayout);
-        mUsername2TextInputLayout = (TextInputLayout) findViewById(R.id.username2TextInputLayout);
-        mPassword2TextInputLayout = (TextInputLayout) findViewById(R.id.password2TextInputLayout);
-        mUsername3TextInputLayout = (TextInputLayout) findViewById(R.id.username3TextInputLayout);
-        mPassword3TextInputLayout = (TextInputLayout) findViewById(R.id.password3TextInputLayout);
+        mUsername1TextInputLayout = findViewById(R.id.username1TextInputLayout);
+        mPassword1TextInputLayout = findViewById(R.id.password1TextInputLayout);
+        mUsername2TextInputLayout = findViewById(R.id.username2TextInputLayout);
+        mPassword2TextInputLayout = findViewById(R.id.password2TextInputLayout);
+        mUsername3TextInputLayout = findViewById(R.id.username3TextInputLayout);
+        mPassword3TextInputLayout = findViewById(R.id.password3TextInputLayout);
 
         mUsername1TextInputLayout.getEditText().setText(UsernamesAndPasswords.username1);
         mPassword1TextInputLayout.getEditText().setText(UsernamesAndPasswords.password1);
@@ -52,7 +52,7 @@ public class ChangeCredActivity extends AppCompatActivity {
         mUsername3TextInputLayout.getEditText().setText(UsernamesAndPasswords.username3);
         mPassword3TextInputLayout.getEditText().setText(UsernamesAndPasswords.password3);
 
-        Button saveButton = (Button) findViewById(R.id.saveButton);
+        Button saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

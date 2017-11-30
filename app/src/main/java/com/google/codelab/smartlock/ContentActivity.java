@@ -28,7 +28,7 @@ public class ContentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
 
-        Button logoutButton = (Button) findViewById(R.id.logoutButton);
+        Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,7 +39,7 @@ public class ContentActivity extends AppCompatActivity {
             }
         });
 
-        Button changeCredsButton = (Button) findViewById(R.id.changeCredsButton);
+        Button changeCredsButton = findViewById(R.id.changeCredsButton);
         changeCredsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
