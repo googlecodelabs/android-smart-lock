@@ -27,6 +27,10 @@ public class CodelabUtil {
         return false;
     }
 
+    // ***************** Add isValidCredintial overload here ********************
+
+    // ******************* End isValidCredintial overload ***********************
+
     /**
      * Check if given username starts an existing username in the UsernamesAndPassword class.
      */

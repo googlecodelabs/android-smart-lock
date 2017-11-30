@@ -32,10 +32,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String SIGN_IN_TAG = "sign_in_fragment";
     public static final int DELAY_MILLIS = 3000;
 
-    // Add mGoogleApiClient and mIsResolving fields here.
     private boolean mIsResolving;
     private boolean mIsRequesting;
     private Handler mHandler;
+
+    // ********* Add member variables here ****************
+
+    // ************ End member variables ******************
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,4 +156,32 @@ public class MainActivity extends AppCompatActivity {
         return mIsRequesting;
     }
 
+    // **************** Add callbacks here *********************
+
+    // **************** End callbacks here *********************
+
+
+    // **************** Add saveCredentials  here ***************
+
+    // ****************** End saveCredentials ******************
+
+
+    // **************** Add resolveResult here ***************
+
+    // ****************** End resolveResult ******************
+
+
+    // **************** Add onActivityResult here **************
+
+    // ****************** End onActivityResult *****************
+
+
+    // *************** Add requestCredentials here *************
+
+    // ****************** End requestCredentials ***************
+
+
+    // ************ Add processRequestCredential here **********
+
+    // ************* End processRequestCredential **************
 }

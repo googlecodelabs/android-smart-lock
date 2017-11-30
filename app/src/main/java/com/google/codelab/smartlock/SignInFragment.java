@@ -77,12 +77,15 @@ public class SignInFragment extends Fragment {
                 String username = mUsernameTextInputLayout.getEditText().getText().toString();
                 String password = mPasswordTextInputLayout.getEditText().getText().toString();
 
+
+                // ************ Replace with Smart Lock sign in *****************
                 if (CodelabUtil.isValidCredential(username, password)) {
                     ((MainActivity) getActivity()).goToContent();
                 } else {
                     Log.d(TAG, "Credentials are invalid. Username or password are incorrect.");
                     setSignEnabled(true);
                 }
+                // **************** End Smart Lock sign in ***********************
             }
         });
 
