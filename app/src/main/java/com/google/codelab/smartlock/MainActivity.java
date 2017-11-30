@@ -158,30 +158,42 @@ public class MainActivity extends AppCompatActivity {
 
     // **************** Add callbacks here *********************
 
+    // TODO: Add callbacks
+
     // **************** End callbacks here *********************
 
 
     // **************** Add saveCredentials  here ***************
+
+    // TODO: implement saveCredentials
 
     // ****************** End saveCredentials ******************
 
 
     // **************** Add resolveResult here ***************
 
+    // TODO: implement resolveResult
+
     // ****************** End resolveResult ******************
 
 
     // **************** Add onActivityResult here **************
+
+    // TODO: implement onActivityResult
 
     // ****************** End onActivityResult *****************
 
 
     // *************** Add requestCredentials here *************
 
+    // TODO: implement requestCredentials
+
     // ****************** End requestCredentials ***************
 
 
     // ************ Add processRequestCredential here **********
+
+    // TODO: implement processRequestCredential
 
     // ************* End processRequestCredential **************
 }
